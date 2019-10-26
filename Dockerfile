@@ -1,16 +1,15 @@
 FROM nodrama/cljs-dev:latest
 MAINTAINER "Filip Bielejec" <nodrama.io>
 
-# add lein
-# add truffle
-# add ganache-cli
+RUN apt-get update -y \
+    && apt-get install --no-install-recommends -y \
+    -q python2.7 wget ca-certificates
 
-RUN npm install -g truffle@4.1.14 ganache-cli@6.1.8
+RUN ln -s /usr/bin/python2.7 /usr/bin/python
 
-EXPOSE 8549
-EXPOSE 8545
+RUN npm install -g truffle@4.1.14
 
-RUN ls
-RUN ls ~/.nvm/versions/node/v11.14.0/bin
-
-# entrypoint .nvm/versions/node/v11.14.0/bin/truffle
+RUN wget "https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein" \
+        && chmod a+x lein \
+        && mv lein /usr/bin/lein \
+        && lein --version

@@ -8,17 +8,14 @@
 function build {
   {
     NAME=$1
-    BUILD_ENV=$2
     TAG=$(git log -1 --pretty=%h)
     IMG=$NAME:$TAG
 
-    SERVICE=$(echo $NAME | cut -d "-" -f 2)
-
     echo "============================================="
-    echo  "["$SERVICE"] Buidling: "$IMG""
+    echo  "Buidling: "$IMG""
     echo "============================================="
 
-    docker build -t $IMG $SERVICE/
+    docker build -t $IMG .
     docker tag $IMG $NAME:latest
 
   } || {
@@ -40,10 +37,10 @@ function login {
 
 #--- EXECUTE
 
-IMAGE=district0x/cljs-test
+IMAGE=district0x/cljs-dev
 
 login
 build $IMAGE
-#push $IMAGE
+push $IMAGE
 
 exit $?
