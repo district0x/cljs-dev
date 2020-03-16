@@ -19,9 +19,13 @@ USER root
 # RUN apt-get -y install debconf-utils \
 #         && echo '* libraries/restart-without-asking boolean true' | debconf-set-selections
 
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+RUN sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+
+# git wget python2.7 ca-certificates chromium-browser curl git ssh tar gzip ca-certificates build-essential
 RUN apt-get update -y && \
         apt-get install --no-install-recommends -yq \
-        wget git python2.7  \
+        wget git build-essential google-chrome-stable \
         && rm -rf /tmp/* /var/{tmp,cache}/* /var/lib/{apt,dpkg}/
 
 # install lein
@@ -31,12 +35,14 @@ RUN apt-get update -y && \
 #         && lein downgrade $LEIN_VERSION \
 #         && lein --version
 
-# install manually all the missing libraries
-RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
+# # install manually all the missing libraries
+# RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libcairo2 libcups2 libfontconfig1 libgdk-pixbuf2.0-0 libgtk-3-0 libnspr4 libpango-1.0-0 libxss1 fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils
 
-# install chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+# # install chrome
+# RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+# RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
+
+
 
 # install nvm
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | bash
@@ -51,7 +57,7 @@ RUN . $NVM_DIR/nvm.sh \
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-# git wget python2.7 ca-certificates chromium-browser curl git ssh tar gzip ca-certificates build-essential
+
 
 # install truffle
 RUN npm install -g truffle@${TRUFFLE_VERSION}
