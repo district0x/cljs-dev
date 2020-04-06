@@ -2,16 +2,13 @@ FROM circleci/clojure:lein-2.9.1
 #adoptopenjdk/openjdk8:latest
 MAINTAINER "Filip Bielejec" <nodrama.io>
 
-
 # ENV variables
 ENV NVM_VERSION 0.31.2
 ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 11.14.0
 ENV LEIN_VERSION 2.9.1
 ENV TRUFFLE_VERSION 4.1.14
-
-ENV CHROME_BIN=/usr/bin/chromium-browser
-ENV CHROME_PATH=/usr/lib/chromium/
+ENV CHROME_BIN /usr/bin/google-chrome
 
 USER root
 
@@ -42,8 +39,6 @@ RUN apt-get update -y && \
 # RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 # RUN dpkg -i google-chrome-stable_current_amd64.deb; apt-get -fy install
 
-
-
 # install nvm
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v$NVM_VERSION/install.sh | bash
 
@@ -56,8 +51,6 @@ RUN . $NVM_DIR/nvm.sh \
 # # add node and npm to PATH
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
-
-
 
 # install truffle
 RUN npm install -g truffle@${TRUFFLE_VERSION}
