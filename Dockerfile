@@ -52,8 +52,8 @@ RUN . $NVM_DIR/nvm.sh \
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
-# install truffle
-RUN npm install -g truffle@${TRUFFLE_VERSION}
+# install truffle and yarn
+RUN npm install -g truffle@${TRUFFLE_VERSION} yarn
 
 # RUN ln -s /usr/bin/python2.7 /usr/bin/python
 
